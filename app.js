@@ -6,6 +6,9 @@ const ejs = require("ejs");
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/padelDB");
 const md5 = require("md5");
+const sessions = require("express-session");
+const cookieParser = require("cookie-parser");
+var session;
 
 //Booking Schema
 const bookingSchema = new mongoose.Schema({
@@ -39,6 +42,12 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cookieParser());
+app.use(sessions({
+    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
+    saveUninitialized:true,
+    cookie: { maxAge: 1000*60*60^24 },
+    resave: false}));
 
 
 
@@ -57,6 +66,16 @@ app.get("/welcome", (req,res) => {
 
 app.get("/login", (req,res) => {
     res.render("login", {currentYear: currentYear});
+});
+
+app.get("/logout", (req,res) =>{
+        req.session.destroy();
+        session="";
+        res.redirect('/login');
+});
+
+app.get("/profile", (req,res) => {
+    res.render("profile", {currentYear: currentYear});
 });
 
 app.get("/register", (req,res) => {
@@ -82,6 +101,7 @@ app.post("/register", (req, res) => {
 });
 
 app.post("/login", (req,res) => {
+    
     console.log('====================================');
     console.log("IN LOGIN POST REQUEST");
     console.log('====================================');
@@ -100,9 +120,17 @@ app.post("/login", (req,res) => {
         
 
         if(req.body.password === password){
+
+            session = req.session;
+            session.email = foundUser.email;
+            session.userId = foundUser.id;
+            console.log("SESSION")
+            console.log(session);
+
             console.log('====================================');
             console.log("LOGIN SUCCESSFUL");
             console.log('====================================');
+
             res.redirect("/home");
         }
         else{
