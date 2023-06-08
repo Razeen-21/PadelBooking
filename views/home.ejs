@@ -1,0 +1,32 @@
+<%- include("header") -%>
+<link rel="stylesheet" href="css/home.css" />
+
+<div class="grid-container">
+    <div class="book-matches card">
+        <img src="images/Padel-Rivonia-low-angle.jpeg" alt="cannot display image." width="300px" height="200px">
+        <p class = "card-description">
+            Jump straight into the fastest growing sport in the country right away!
+        </p>
+        <button class="w-100 btn btn-lg btn-signin btn-primary btn-action" type="submit">Book A Match</button>
+    </div>
+
+    <div class="view-matches card">
+        <img src="images/what-is-padel.jpg" alt="cannot display image." width="300px" height="200px">
+        <p class = "card-description">
+            Take a look at all upcoming events across all clubs!
+        </p>
+        <button class="w-100 btn btn-lg btn-signin btn-primary btn-action" type="submit">View Events</button>
+    </div>
+    
+    <div class="view-clubs card">
+        <img src="images/641a19eab1c7272b0b2d5b07_Tampere.jpg" alt="cannot display image." width="300px" height="200px">
+        <p class = "card-description">Look at all clubs listed on the Padel Network!</p>
+        <form action="/fetch/clubs" method="get">
+          <button class="w-100 btn btn-lg btn-signin btn-primary btn-action" type="submit">View Clubs</button>
+        </form>
+        
+    </div>
+    
+</div>
+
+<%- include("footer") -%>

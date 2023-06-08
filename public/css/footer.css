@@ -1,0 +1,24 @@
+footer {
+    margin-top: auto;
+    padding-top: 0.1vh;
+    padding-bottom: 0.1vh;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    background-color: black;
+    text-align: center;
+    font-size: 10px;
+  }
+
+.link-icon {
+    background-color: white;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-align: center;
+    border-color: black;
+}
+
+.link-icon:hover {
+    background-color: #00b3db;
+}

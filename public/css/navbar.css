@@ -1,0 +1,47 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    /* background-image: url("../images/6328118.jpg"); */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.flex-container-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    align-content: stretch;
+    gap: 1px;
+    background-color: black;
+}
+
+.icon {
+    width: 60px;
+    height: 60px;
+    position: relative;
+    right: 86%;
+}
+
+.icon:hover {
+    cursor: pointer;
+}
+
+.flex-item-nav:hover{
+    background-color: white;
+    color: black;
+}
+
+.flex-item-nav {
+    display: flex;
+    background-color: black;
+    color: white;
+    text-align: center;
+    border-radius: 3px;
+    padding: 20px;
+    flex-shrink: 2;
+}
+
+.flex-item-nav:hover{
+    background-color: #00b3db;
+    color: black;
+}

@@ -1,0 +1,16 @@
+<%- include("header") -%>
+<link rel="stylesheet" href="/css/clubs.css">
+<div class = "grid-container">
+    <% clubs.forEach((club) => { %>
+        <div class="flex-container-card">
+            <h5 class = "club-name"><%=club.name%></h5>
+            <img class = "club-image" src="<%= `/images/${club.imageName}` %>" 
+            alt="Cannot display image" width="200px" height="250px"> 
+            <div class = "club-info">
+            <p class = "address">Address: <%=club.address%></p>
+            <p>Number of courts: <%=club.numberOfCourts%></p>
+            </div>
+        </div>
+    <% }); %>
+</div>
+<%- include("footer") -%>
