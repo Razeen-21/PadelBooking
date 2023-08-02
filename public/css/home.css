@@ -4,6 +4,10 @@ body{
     flex-direction: column;
   }
 
+h1 {
+    text-align: center;
+}
+
 .grid-container{
     /* grid-template-columns: repeat(3,1fr); */
     grid-template-columns: 300px 300px 300px;

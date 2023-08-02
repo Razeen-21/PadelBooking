@@ -1,0 +1,121 @@
+<%- include("header") -%>
+<link rel="stylesheet" href="/css/bookings.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<div class = "grid-container">
+    <h1>Create A Booking</h1>
+    <button class="open-button" onclick="openForm()" id="openBtn">Start Booking Form</button>
+    <div class="form-popup-flex" id="myForm">
+        <form id = "bookingForm" action="/create/booking" method="post" class="form-container">
+          <div class= "add-player-container">
+            <label for="bookingHoldersName">Add Player</label>
+            <input type="text" id="bookingHoldersName" class="form-control" id="floatingInput" placeholder="<%= `${bookingHolderName}` %>" name="bookingHoldersName">
+            <div class = "players-list" style="display: none;"></div>
+            <button id="addPlayerBtn" type="button" class="btn" onclick="addPlayer()">Confirm Player</button>
+          </div>
+          
+         <div class="club-container">
+          <label class="choose-club-label">Choose A Club</label>
+          <div id="clubsContainer" style="display: flex; flex-direction: column;">
+            <% clubs.forEach((club) => { %>
+              <button type="button" id="<%= `${club.name}` %>" class = "club-name" onclick="selectClub()"><%=club.name%></button>
+            <% }); %>
+          </div>
+          </div>
+          <label for="clubName">Selected Club</label>
+          <input type="text" class="form-control" value="" id="clubName" name="clubName" readonly>
+          <button type="submit" class="open-button submit-button">Create Booking</button>
+          <button type="button" class="btn cancel" onclick="closeForm()">Close</button> 
+        </form>
+    </div>
+</div>
+
+<script>
+var players = [];
+
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+  var bookingForm = document.getElementById("bookingForm");
+  bookingForm.style.cssText = "display: flex; flex-direction: column";
+  document.getElementById("openBtn").style.display = "none";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+  document.getElementById("openBtn").style.display = "grid";
+  document.getElementById("addPlayerBtn").disabled = false;
+}
+
+function selectClub() {
+  var selectedClub = event.target.id;
+  console.log(selectedClub);
+  var selectedClubInput = document.getElementById("clubName");
+  selectedClubInput.value = selectedClub;
+}
+
+function addPlayer() {
+
+    if(players.length === 3) {
+        document.getElementById("addPlayerBtn").disabled = true;
+    }
+
+    var addPlayerBtn = document.getElementById("addPlayerBtn");
+    var addPlayerInput = document.getElementById("bookingHoldersName");
+    var playerVal = addPlayerInput.value;
+
+    console.log("addPlayer() method hit");
+    console.log(playerVal);
+    players.push(playerVal);
+    const sizeOfPlayers = players.length;
+    console.log(players);
+    var playersList = document.getElementsByClassName("players-list")[0];
+    playersList.style.display = "block";
+    
+    const playerDiv = document.createElement("div");
+    playerDiv.style.cssText = "margin-top: 2px; background-color: black; border-radius: 4px; color: white; display: grid; flex-direction: row; grid-template-rows: [row1-start] 120% [row1-end]; grid-template-columns: [col1-start] 80% [col1-end col2-start] 20% [col2-end]; align-items: center; justify-items: center;";
+    const playerSpan = document.createElement("span");
+    // playerParagraph.type = "text";
+    // playerParagraph.className = "player-input-field"
+    // playerParagraph.readOnly = "true";
+    // playerParagraph.value = playerVal;
+    playerSpan.style.cssText = "font-size: 18px; padding: 10%; border: none; height:100%";
+    playerSpan.innerHTML = playerVal;
+    const playerInput = document.createElement("input");
+    playerInput.type = "text";
+    playerInput.style.display = "none";
+    playerInput.name = "player" + sizeOfPlayers;
+    playerInput.value = playerVal;
+    console.log(playerInput.name);
+    console.log(playerInput.value);
+    const playerRemoveBtn = document.createElement("button");
+    playerRemoveBtn.type = "button";
+    playerRemoveBtn.style.cssText = "background-color: transparent; border: none;"
+    playerRemoveBtn.addEventListener("click", deletePlayer);
+    const playerRemoveIcon = document.createElement("i");
+    playerRemoveIcon.id = players.lastIndexOf(playerVal);
+    playerRemoveIcon.className = "fa-solid fa-square-xmark fa-2xl";
+    playerRemoveIcon.style.cssText = "color: white; width: 100%; height: 100%";
+    playerRemoveBtn.appendChild(playerRemoveIcon);
+    playerDiv.appendChild(playerSpan);
+    playerDiv.appendChild(playerInput);
+    playerDiv.appendChild(playerRemoveBtn);
+    playersList.appendChild(playerDiv);
+}
+
+function deletePlayer(){
+    document.getElementById("addPlayerBtn").disabled = false;
+    var indexOfDeletedPlayer = event.target.id;
+    console.log("Index of deleted player " + indexOfDeletedPlayer);
+    var deletedPlayer = players[indexOfDeletedPlayer];
+    console.log("Player to be deleted " + deletedPlayer)
+    players.splice(indexOfDeletedPlayer,1);
+    var playersList = document.getElementsByClassName("players-list")[0];
+    console.log(playersList);
+    var playerDiv = document.getElementById(indexOfDeletedPlayer).parentElement.parentElement;
+    console.log(playerDiv);
+    playersList.removeChild(playerDiv);
+    console.log(players);
+    console.log("Player Deleted");
+}
+</script>
+
+<%- include("footer") -%>

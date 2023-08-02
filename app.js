@@ -13,6 +13,8 @@ var session;
 //Booking Schema
 const bookingSchema = new mongoose.Schema({
     players: [String],
+    selectedClub: String,
+    userId: String,
     result: String
 });
 const Booking = mongoose.model("Booking", bookingSchema);
@@ -40,7 +42,7 @@ var currentYear = currentDate.getFullYear();
 
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
-app.use(express.static("public"));
+// app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(sessions({
@@ -54,10 +56,6 @@ app.use(sessions({
 //Beginning of get requests
 app.get("/", (req,res) => {
     res.redirect("/welcome");
-});
-
-app.get("/clubs", (req, res) => {
-    res.render("clubs", {currentYear: currentYear});
 });
 
 app.get("/welcome", (req,res) => {
@@ -84,6 +82,23 @@ app.get("/register", (req,res) => {
 
 app.get("/home", (req,res) => {
     res.render("home",  {currentYear: currentYear});
+});
+
+app.get("/create/booking", (req,res) => {
+
+    Club.find().then(clubs => {
+        if(clubs === null){
+            console.log("Failed to fetch clubs.");
+            console.log(clubs);
+            res.redirect("/home");
+        }
+        else{
+            console.log("Clubs successfully fetched.");
+            console.log("Taking user to create bookings screen");
+            res.render("bookings", {currentYear: currentYear,
+            bookingHolderName: session.name, clubs: clubs});
+    }
+});
 });
 //End of get Requests
 
@@ -118,19 +133,18 @@ app.post("/login", (req,res) => {
         console.log(foundUser);
         const password = foundUser.password;
         
-
-        if(req.body.password === password){
-
+         if(req.body.password === password){
+            
             session = req.session;
             session.email = foundUser.email;
             session.userId = foundUser.id;
+            session.name = foundUser.name;
             console.log("SESSION")
             console.log(session);
-
+            
             console.log('====================================');
             console.log("LOGIN SUCCESSFUL");
             console.log('====================================');
-
             res.redirect("/home");
         }
         else{
@@ -143,15 +157,32 @@ app.post("/login", (req,res) => {
       });
 });
 
-
 //Booking Endpoints
 
 app.post("/create/booking", (req,res) =>{
     console.log('====================================');
     console.log('Creating booking for user ');
     console.log('====================================');
+    console.log(req.body);
+
+    //inserting into the user table embedded bookings
+    User.findByIdAndUpdate(session.id, {bookings: {
+        players: [req.body.player1, req.body.player2, req.body.player3, req.body.player4],
+        selectedClub: req.body.clubName,
+        userId: session.id,
+        result: ""}}).then((updatedUser)=> {
+           if(updatedUser===null){
+            res.status(500).send("Failed to create booking.");
+           } 
+           else{
+            console.log(updatedUser);
+           }
+        });
+    
     const booking = new Booking({
-        players: req.body.players, 
+        players: [req.body.player1, req.body.player2, req.body.player3, req.body.player4], 
+        selectedClub: req.body.clubName,
+        userId: session.id,
         result: ""});
     booking.save().then((createdBooking)=>{
         if(createdBooking===null){
@@ -160,7 +191,7 @@ app.post("/create/booking", (req,res) =>{
         else{
             res.status(201).send("Booking created successfully.");
         }
-    })
+    });
     //res.redirect("/home");
 });
 
@@ -222,7 +253,7 @@ app.delete("/delete/booking", (req,res)=>{
 //res.redirect("/home");
 });
 
-app.get("/fetch/clubs", (req,res) =>{
+app.get("/clubs", (req,res) =>{
     console.log('====================================');
     console.log("Fetching All Clubs");
     console.log('====================================');
@@ -231,14 +262,37 @@ app.get("/fetch/clubs", (req,res) =>{
         if(clubs === null){
             console.log("Failed to fetch clubs.");
             console.log(clubs);
-            res.render("clubs", {clubs: clubs});
+            res.redirect("/login");
         }
         else{
             console.log("Clubs successfully fetched.");
-            console.log(clubs);
-            res.render("clubs", {currentYear: currentYear,
-                clubs: clubs});
+            res.render("clubs", {clubs: clubs,
+                currentYear: currentYear});
+    }
+});
+});
+
+app.get("/profile/details",(req,res) => {
+    
+    console.log('====================================');
+    console.log("Fetching profile for " + session.email);
+    console.log('====================================');
+
+    User.findById(session.userId).then(user => {
+        if(user === null){
+            console.log("Failed to fetch user data");
+            res.render("profile", {currentYear: currentYear,
+                message: "Failed to fetch user data"});
         }
+        else{
+        console.log(user.name);
+        console.log(user.bookings);
+        console.log(user.playerRating);
+        res.render("profile", {currentYear: currentYear,
+        name: user.name,
+        playerRating: user.playerRating,
+        bookings: user.bookings});
+        };
     });
 });
 

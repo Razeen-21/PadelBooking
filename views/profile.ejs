@@ -1,4 +1,36 @@
 <%- include("header") %>
 <link rel="stylesheet" href="/css/profile.css">
-<div>Hello World</div>
+<div class = "grid-container">
+    <div class = "profile-container-flex">
+        <h2><%=name%></h2>
+        <br>
+        <h5>Player Rating <%= playerRating %></h4>
+        <h5>Number Of Matches <%= bookings.length %> </h5>
+    </div>
+    
+    <div class = "grid-matches-container">
+        <% bookings.forEach((booking) => { %>
+            <% var clubName = booking.club; %>
+            <% console.log("Club Name " + clubName) %>
+            <% var sets = booking.result.split(" "); %>
+            <% var topScorePlayers = booking.players[0] + "," + booking.players[1]; %>
+            <% var bottomScorePlayers = booking.players[2] + "," + booking.players[3]; %>
+            <% var topScoreSets = [];%>
+            <% var bottomScoreSets = [];%>
+            <% sets.forEach((set) => { %>
+            <% topScoreSets.push(set.charAt(0)); %>
+            <% bottomScoreSets.push(set.charAt(2)); %>
+            <% }); %>
+                <div class="grid-score-container">
+                    <p class="top-players"><%=topScorePlayers%></p>
+                    <p class="bottom-players"><%=bottomScorePlayers%></p>
+
+                <% for(var i = 0; i < topScoreSets.length; i++) { %>
+                    <p><%=topScoreSets[i]%></p>
+                    <p><%=bottomScoreSets[i]%></p>
+                <% } %>
+            </div>
+        <% }); %>
+    </div>
+</div>
 <%- include("footer") %>

@@ -1,0 +1,141 @@
+body{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 40;
+    font-size: larger;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-rows: repeat(auto, 500px);
+    grid-template-columns: 1;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    align-items: stretch;
+}
+
+.open-button {
+  background-color: #00b3db;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  opacity: 1;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.open-button:hover {
+    background-color: black;
+    border-color: black;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* The popup form - hidden by default */
+.form-popup-flex {
+  display: none;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 100%;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+/* .form-container input[type=text], .form-container input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+} */
+
+.form-control {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+.form-container .player-input-field {
+  background-color: black;
+  color: white;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #00b3db;
+  border-radius: 4px;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  margin-top: 15px;
+  opacity: 1;
+}
+
+.form-container .btn:hover {
+    background-color: black;
+    border-color: black;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.form-container .cancel {
+  background-color: black;
+}
+
+.form-container .cancel:hover{
+    background-color: #00b3db;
+    border-color: #00b3db;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.choose-club {
+  margin-top: 2%;
+  margin-bottom: 5%;
+}
+
+.club-name {
+  margin-bottom: 1%;
+  background-color: black;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  opacity: 1;
+  border-radius: 4px;
+}
+
+.club-name:hover {
+  background-color: #00b3db;
+}
+
+.choose-club-label {
+  margin-bottom: 2%;
+  margin-top: 4%;
+}
+
+.submit-button{
+  margin-top: 4%;
+  margin-bottom: 2%;
+}
